@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+@Deprecated('Define colors in DarkTheme and LightTheme')
 class AppColors {
   static const Color transparentPowderBlue = Color.fromARGB(100,153,178,221);
   static const Color powderBlue = Color.fromARGB(255,153,178,221);
