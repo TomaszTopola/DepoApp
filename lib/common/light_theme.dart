@@ -34,11 +34,6 @@ class LightTheme{
       drawerTheme: const DrawerThemeData(
           backgroundColor: backgroundColor
       ),
-
-      listTileTheme: const ListTileThemeData(
-        tileColor: secondaryColor,
-        textColor: secondaryFgColor,
-      ),
   );
 
 }
