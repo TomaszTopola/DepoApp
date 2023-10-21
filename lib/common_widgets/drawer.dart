@@ -22,12 +22,13 @@ class _DepoDrawerState extends State<DepoDrawer> {
       case '/depo/status':
         selectedIndex = 1;
         break;
-      case 'contact':
+      case '/contact':
         selectedIndex = 2;
         break;
-      case 'login':
+      case '/login':
         selectedIndex = 3;
     }
+
     return Drawer(
       child: ListView(
         children: <Widget>[
