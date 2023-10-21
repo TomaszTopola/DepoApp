@@ -18,14 +18,14 @@ class DepoService{
     return result;
   }
 
-  static Future<double> countDepos(String sdm) async{
+  static Future<double> countDepos(String sdm, String status) async{
     double result;
     try{
       var url = Uri.http(
         '${ServerProperties.domain}:${ServerProperties.port}',
         '/api/no-gdpr/depo/',
         {//PARAMS
-          'depo_status': 'ACTIVE',
+          'depo_status': status,
           'sdm': sdm,
         }
       );
