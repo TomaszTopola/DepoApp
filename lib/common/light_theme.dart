@@ -29,12 +29,16 @@ class LightTheme{
 
   static final ThemeData theme = ThemeData(
       scaffoldBackgroundColor: backgroundColor,
-
       colorScheme: colorScheme,
 
       drawerTheme: const DrawerThemeData(
           backgroundColor: backgroundColor
-      )
+      ),
+
+      listTileTheme: const ListTileThemeData(
+        tileColor: secondaryColor,
+        textColor: secondaryFgColor,
+      ),
   );
 
 }
