@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:depo_app/services/user_service.dart';
 import 'package:flutter/material.dart';
 
 class DepoDrawer extends StatefulWidget {
@@ -8,6 +11,24 @@ class DepoDrawer extends StatefulWidget {
 }
 
 class _DepoDrawerState extends State<DepoDrawer> {
+
+  bool isLoggedIn = false;
+  String loggedInTitle = 'zaloguj się';
+
+  void checkLoggedIn() async{
+    isLoggedIn = await UserService.isTokenValid();
+    setState(() {
+      loggedInTitle = isLoggedIn? 'wyloguj':'zaloguj się';
+    });
+    print(loggedInTitle);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    checkLoggedIn();
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -45,6 +66,8 @@ class _DepoDrawerState extends State<DepoDrawer> {
           ),
           ListTile(
             selected: selectedIndex == 0,
+            selectedTileColor: Theme.of(context).colorScheme.secondary,
+            selectedColor: Theme.of(context).colorScheme.onSecondary,
             title: const Text('Strona Główna'),
             onTap: () {
               setState(() {
@@ -55,6 +78,8 @@ class _DepoDrawerState extends State<DepoDrawer> {
           const SizedBox(height: 10,),
           ListTile(
             selected: selectedIndex == 1,
+            selectedTileColor: Theme.of(context).colorScheme.secondary,
+            selectedColor: Theme.of(context).colorScheme.onSecondary,
             title: const Text('sprawdź status depozytu'),
             onTap: () {
               setState(() {
@@ -65,17 +90,25 @@ class _DepoDrawerState extends State<DepoDrawer> {
           const SizedBox(height: 10,),
           ListTile(
             selected: selectedIndex == 2,
+            selectedTileColor: Theme.of(context).colorScheme.secondary,
+            selectedColor: Theme.of(context).colorScheme.onSecondary,
             title: const Text('kontakt'),
             onTap: () {},
           ),
           const SizedBox(height: 10,),
           ListTile(
             selected: selectedIndex == 3,
-            title: const Text('zaloguj się'),
+            selectedTileColor: Theme.of(context).colorScheme.secondary,
+            selectedColor: Theme.of(context).colorScheme.onSecondary,
+            title: Text(loggedInTitle,
+            style: TextStyle(color: Theme.of(context).colorScheme.tertiary),),
             onTap: () {
-              setState(() {
-                Navigator.pushReplacementNamed(context, '/login');
-              });
+              if(isLoggedIn){
+                setState(() {
+                  UserService.logout();
+                });
+              }
+              Navigator.pushReplacementNamed(context, '/login');
             },
           ),
         ],
