@@ -1,6 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
+@Deprecated('Use DepoChart instead')
 class DepoCharts extends StatefulWidget {
   const DepoCharts({Key? key, required this.chartHeight}) : super(key: key);
   final double chartHeight;
