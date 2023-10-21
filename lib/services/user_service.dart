@@ -11,34 +11,68 @@ class UserService{
   static const FlutterSecureStorage _storage = FlutterSecureStorage();
 
   static Future<bool> login(String login, String pass) async {
-    var url = Uri.http('${ServerProperties.domain}:${ServerProperties.port}', '/api/users/login');
-    var response = await http.post(
-      url,
-      body:{
-        '_id': login,
-        'password': pass,
-      }
-    );
+    try{
+      var url = Uri.http('${ServerProperties.domain}:${ServerProperties.port}', '/api/users/login');
+      var response = await http.post(
+          url,
+          body:{
+            '_id': login,
+            'password': pass,
+          }
+      );
 
-    if (response.body.isEmpty) return false;
-    if (response.statusCode.toString() != '201') return false;
+      if (response.body.isEmpty) return false;
+      if (response.statusCode.toString() != '201') return false;
 
-    var res = await jsonDecode(response.body);
-    var token = res['token'];
+      var res = await jsonDecode(response.body);
+      var token = res['token'];
 
-    await _storage.write(key: _tokenKey, value: token);
-    String? readToken = await _storage.read(key: _tokenKey);
+      await _storage.write(key: _tokenKey, value: token);
+      String? readToken = await _storage.read(key: _tokenKey);
 
-    if(readToken!=token) return false;
+      if(readToken!=token) return false;
 
-    return true;
+      return true;
+    } catch (err){
+      return false;
+    }
+  }
+
+  static Future<void> logout() async{
+    _storage.delete(key: _tokenKey);
   }
 
   static Future<bool> isTokenValid() async{
-    String? token = await _storage.read(key: 'depo_api_token');
-    if (token == null) return false;
+    String? token = await _storage.read(key: _tokenKey);
 
-    return JwtDecoder.isExpired(token);
+    // print('token: $token');
+    // print('token: ${JwtDecoder.decode(token!)}');
+
+    if (token == null || token == '') return false;
+    DateTime expiresAt = JwtDecoder.getExpirationDate(token);
+
+    return expiresAt.isAfter(DateTime.now());
+  }
+
+  static Future<dynamic> getKeepers() async{
+    var url = Uri.http(
+      '${ServerProperties.domain}:${ServerProperties.port}',
+      '/api/users/',
+    );
+    try{
+      String? token = await _storage.read(key: _tokenKey);
+      var response = await http.get(
+        url,
+        headers: {
+          'Authorization': 'Bearer $token'
+        }
+      );
+      var decoded = await jsonDecode(response.body);
+      return decoded;
+    }catch(err){
+      return -1;
+    }
+
   }
 
 }
