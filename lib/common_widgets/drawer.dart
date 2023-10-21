@@ -72,7 +72,11 @@ class _DepoDrawerState extends State<DepoDrawer> {
           ListTile(
             selected: selectedIndex == 3,
             title: const Text('zaloguj się'),
-            onTap: () {},
+            onTap: () {
+              setState(() {
+                Navigator.pushReplacementNamed(context, '/login');
+              });
+            },
           ),
         ],
       ),
