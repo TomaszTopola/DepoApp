@@ -29,11 +29,12 @@ class DarkTheme{
 
   static final ThemeData theme = ThemeData(
     scaffoldBackgroundColor: backgroundColor,
+    cardColor: secondaryColor,
 
     colorScheme: colorScheme,
 
     drawerTheme: const DrawerThemeData(
       backgroundColor: backgroundColor
-    )
+    ),
   );
 }
