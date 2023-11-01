@@ -1,8 +1,0 @@
-enum DepoStatus{
-  ACTIVE,
-  CONTACTED,
-  OUTDATED,
-  DISPOSED,
-  ARCHIVED,
-  ARCHIVED_DISPOSED,
-}

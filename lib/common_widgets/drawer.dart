@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:depo_app/services/user_service.dart';
 import 'package:flutter/material.dart';
 
@@ -76,17 +74,17 @@ class _DepoDrawerState extends State<DepoDrawer> {
             },
           ),
           const SizedBox(height: 10,),
-          ListTile(
-            selected: selectedIndex == 1,
-            selectedTileColor: Theme.of(context).colorScheme.secondary,
-            selectedColor: Theme.of(context).colorScheme.onSecondary,
-            title: const Text('sprawdź status depozytu'),
-            onTap: () {
-              setState(() {
-                Navigator.pushReplacementNamed(context, '/depo/status');
-              });
-            },
-          ),
+          // ListTile(
+          //   selected: selectedIndex == 1,
+          //   selectedTileColor: Theme.of(context).colorScheme.secondary,
+          //   selectedColor: Theme.of(context).colorScheme.onSecondary,
+          //   title: const Text('sprawdź status depozytu'),
+          //   onTap: () {
+          //     setState(() {
+          //       Navigator.pushReplacementNamed(context, '/depo/status');
+          //     });
+          //   },
+          // ),
           const SizedBox(height: 10,),
           ListTile(
             selected: selectedIndex == 2,

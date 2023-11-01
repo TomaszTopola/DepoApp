@@ -7,7 +7,7 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 
 class UserService{
 
-  static const String _tokenKey = 'depo_api_token';
+  static const String tokenKey = 'depo_api_token';
   static const FlutterSecureStorage _storage = FlutterSecureStorage();
 
   static Future<bool> login(String login, String pass) async {
@@ -27,8 +27,8 @@ class UserService{
       var res = await jsonDecode(response.body);
       var token = res['token'];
 
-      await _storage.write(key: _tokenKey, value: token);
-      String? readToken = await _storage.read(key: _tokenKey);
+      await _storage.write(key: tokenKey, value: token);
+      String? readToken = await _storage.read(key: tokenKey);
 
       if(readToken!=token) return false;
 
@@ -39,11 +39,11 @@ class UserService{
   }
 
   static Future<void> logout() async{
-    _storage.delete(key: _tokenKey);
+    _storage.delete(key: tokenKey);
   }
 
   static Future<bool> isTokenValid() async{
-    String? token = await _storage.read(key: _tokenKey);
+    String? token = await _storage.read(key: tokenKey);
 
     // print('token: $token');
     // print('token: ${JwtDecoder.decode(token!)}');
@@ -60,12 +60,33 @@ class UserService{
       '/api/users/',
     );
     try{
-      String? token = await _storage.read(key: _tokenKey);
+      String? token = await _storage.read(key: tokenKey);
       var response = await http.get(
         url,
         headers: {
           'Authorization': 'Bearer $token'
         }
+      );
+      var decoded = await jsonDecode(response.body);
+      return decoded;
+    }catch(err){
+      return -1;
+    }
+
+  }
+
+  static Future<dynamic> getKeeperName(String id) async{
+    var url = Uri.http(
+      '${ServerProperties.domain}:${ServerProperties.port}',
+      '/api/users/${id.toString()}',
+    );
+    try{
+      String? token = await _storage.read(key: tokenKey);
+      var response = await http.get(
+          url,
+          headers: {
+            'Authorization': 'Bearer $token'
+          }
       );
       var decoded = await jsonDecode(response.body);
       return decoded;

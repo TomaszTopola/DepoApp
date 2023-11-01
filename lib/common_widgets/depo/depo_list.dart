@@ -1,9 +1,12 @@
+import 'package:depo_app/common_widgets/depo/depo_dialog.dart';
 import 'package:depo_app/services/depo_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class DepoList extends StatefulWidget {
-  const DepoList({Key? key}) : super(key: key);
+  const DepoList({Key? key, required this.sdm}) : super(key: key);
+
+  final String sdm;
 
   @override
   State<DepoList> createState() => _DepoListState();
@@ -23,8 +26,18 @@ class _DepoListState extends State<DepoList> {
 
   List<String> items = List<String>.generate(200, (index) => '$index/2023');
 
+
   void setupListView() async{
-    List<dynamic> depos = await DepoService.getAllNoGdpr();
+    List<dynamic> allDepos = await DepoService.getAllDepos(widget.sdm);
+    List<dynamic> depos = [];
+
+    print(allDepos);
+
+    for(dynamic depo in allDepos){
+      if(depo['depo_status'] == 'ARCHIVED') continue;
+      if(depo['depo_status'] == 'ARCHIVED_DISPOSED') continue;
+      depos.add(depo);
+    }
 
     setState(() {
       if(depos.isEmpty){
@@ -53,45 +66,32 @@ class _DepoListState extends State<DepoList> {
       }
 
       displayWidget = ListView.builder(
-          itemCount: depos.length,
-          prototypeItem: ListTile(
-            title: Text(depos.first['_id']),
-            subtitle: Text(depos.first['depo_status']),
-          ),
-          itemBuilder: (context, index){
-            return ListTile(
+        padding: const EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
+        itemCount: depos.length,
+        itemBuilder: (context, index){
+          return Material(
+            elevation: 5.0,
+            borderRadius: BorderRadius.circular(5.0),
+            child: ListTile(
+              leading: SizedBox(
+                height: double.infinity,
+                child: DepoService.getDepoStatusIcon(depos[index]),
+              ),
               title: Text(depos[index]['_id']),
-              subtitle: Text(depos[index]['depo_status']),
+              subtitle: Text(DepoService.getStatusString(depos[index]['depo_status']).toUpperCase()),
               onTap: () => showDialog(
                 context: context,
-                builder: (BuildContext context) => Dialog(
-                  child: Container(
-                    padding: const EdgeInsets.all(15),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: IntrinsicHeight(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Depozyt numer ${depos[index]['_id']}'),
-                          const SizedBox(height: 5,),
-                          Text('SDM ${depos[index]['sdm']}'),
-                          const SizedBox(height: 5,),
-                          Text('Status: ${depos[index]['depo_status']}'),
-                          const SizedBox(height: 5,),
-                          Text('Ważny do: ${depos[index]['valid_to']}'),
-                        ],
-                      ),
-                    ),
-                  )
-                )
-              )
-            );
-          }
-        );
-      });
+                builder: (BuildContext context) => DepoDialog(depo: depos[index])
+              ),
+              trailing: const SizedBox(
+                height: double.infinity,
+                child: Icon(Icons.info_outline),
+              ),
+            ),
+          );
+        }
+      );
+    });
   }
 
   @override
