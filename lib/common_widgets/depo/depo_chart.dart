@@ -29,8 +29,9 @@ class _DepoChartState extends State<DepoChart> {
   late Widget displayWidget = spinner;
 
   late List<Widget> keeperList = [
-    Center(
-      child: spinner,
+    SpinKitWave(
+      color: primary,
+      size: 40,
     )
   ];
 
@@ -39,9 +40,10 @@ class _DepoChartState extends State<DepoChart> {
     final double activeDepos = await DepoService.countDepos(widget.sdm, 'ACTIVE');
     final contactedDepos = await DepoService.countDepos(widget.sdm, 'CONTACTED');
     final outdatedDepos = await DepoService.countDepos(widget.sdm, 'OUTDATED');
+    final disposedDepos = await DepoService.countDepos(widget.sdm, 'DISPOSED');
 
     const double deposLimit = 60.0;
-    double displayActiveDepos = activeDepos + contactedDepos + outdatedDepos;
+    double displayActiveDepos = activeDepos + contactedDepos + outdatedDepos + disposedDepos;
 
     setState(() {
 
@@ -89,7 +91,7 @@ class _DepoChartState extends State<DepoChart> {
             ),
           ),
           Flexible(
-            flex: 3,
+            flex: 2,
             child: IntrinsicHeight(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -148,22 +150,37 @@ class _DepoChartState extends State<DepoChart> {
                       Text('Przeterminowane: $outdatedDepos'),
                     ],
                   ),
+                  const SizedBox(height: 10,),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.circle,
+                        color: secondary,
+                      ),
+                      SizedBox(width: widget.chartHeight/10,),
+                      Text('Zgoda na utylizację: $disposedDepos'),
+                    ],
+                  ),
                 ],
               ),
             ),
           ),
           Flexible(
-            flex: 2,
+            flex: 3,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const SizedBox(height: 20,),
                 const Text('Opiekunowie depozytu:'),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: keeperList,
+                const SizedBox(height: 20,),
+                Expanded(
+                  child: ListView(
+                    // mainAxisAlignment: MainAxisAlignment.center,
+                    // crossAxisAlignment: CrossAxisAlignment.center,
+                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                    children: keeperList,
+                  ),
                 ),
               ],
             ),
@@ -191,12 +208,33 @@ class _DepoChartState extends State<DepoChart> {
     }
     List<Widget> generatedKeeperList = [];
     for (dynamic keeper in keepers){
-      if(keeper['permits'].contains(widget.sdm)
-      || keeper['permits'].contains('ADMIN')){
+      if(keeper['permits'].contains('ADMIN')){
+        generatedKeeperList.add(const SizedBox(height: 10,));
         generatedKeeperList.add(
-            ListTile(
-              title: Text('${keeper['first_name']} ${keeper['last_name']}')
+            Material(
+              elevation: 5.0,
+              shadowColor: secondary,
+              borderRadius: BorderRadius.circular(15.0),
+              child: ListTile(
+                leading: Icon(Icons.admin_panel_settings, color: primary),
+                title: Text('${keeper['first_name']} ${keeper['last_name']}'),
+              ),
             )
+        );
+        continue;
+      }
+      if(keeper['permits'].contains(widget.sdm)){
+        generatedKeeperList.add(const SizedBox(height: 10,));
+        generatedKeeperList.add(
+          Material(
+            elevation: 5.0,
+            shadowColor: secondary,
+            borderRadius: BorderRadius.circular(15.0),
+            child: ListTile(
+              leading: Icon(Icons.account_circle, color: primary),
+              title: Text('${keeper['first_name']} ${keeper['last_name']}'),
+            ),
+          )
         );
       }
     }
