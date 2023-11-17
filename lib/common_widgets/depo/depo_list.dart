@@ -31,8 +31,6 @@ class _DepoListState extends State<DepoList> {
     List<dynamic> allDepos = await DepoService.getAllDepos(widget.sdm);
     List<dynamic> depos = [];
 
-    print(allDepos);
-
     for(dynamic depo in allDepos){
       if(depo['depo_status'] == 'ARCHIVED') continue;
       if(depo['depo_status'] == 'ARCHIVED_DISPOSED') continue;
