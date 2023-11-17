@@ -12,8 +12,8 @@ class _DepoFormState extends State<DepoForm> {
   final firstNameController = TextEditingController();
   final lastNameController = TextEditingController();
   final albumNumberController = TextEditingController();
-  final telephoneNumberController = TextEditingController();
-  final emailAdressController = TextEditingController();
+  final phoneController = TextEditingController();
+  final mailController = TextEditingController();
 
   String sdm = 'KORAB';
 
@@ -22,16 +22,26 @@ class _DepoFormState extends State<DepoForm> {
     idController.dispose();
     firstNameController.dispose();
     albumNumberController.dispose();
-    telephoneNumberController.dispose();
-    emailAdressController.dispose();
+    phoneController.dispose();
+    mailController.dispose();
     super.dispose();
   }
+
+  String? Function(String? value) nonEmptyValidator = (value) {
+    if (value == null || value.isEmpty) {
+      return 'To pole nie może być puste.';
+    }
+    return null;
+  };
+
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: Form(
+        key: _formKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -41,6 +51,7 @@ class _DepoFormState extends State<DepoForm> {
                 hintText: 'ID',
                 labelText: 'ID',
               ),
+              validator: nonEmptyValidator,
             ),
             const SizedBox(height: 10,),
             Row(
@@ -78,6 +89,7 @@ class _DepoFormState extends State<DepoForm> {
                 hintText: 'imię',
                 labelText: 'imię',
               ),
+              validator: nonEmptyValidator,
             ),
             TextFormField(
               controller: lastNameController,
@@ -85,6 +97,7 @@ class _DepoFormState extends State<DepoForm> {
                 hintText: 'nazwisko',
                 labelText: 'nazwisko',
               ),
+              validator: nonEmptyValidator,
             ),
             TextFormField(
               controller: albumNumberController,
@@ -92,32 +105,38 @@ class _DepoFormState extends State<DepoForm> {
                 hintText: 'numer albumu',
                 labelText: 'numer albumu',
               ),
+              validator: nonEmptyValidator,
             ),
             TextFormField(
-              controller: telephoneNumberController,
+              controller: phoneController,
               decoration: const InputDecoration(
                 hintText: 'numer telefonu',
                 labelText: 'numer telefonu',
               ),
+              validator: nonEmptyValidator,
             ),
             TextFormField(
-              controller: emailAdressController,
+              controller: mailController,
               decoration: const InputDecoration(
                 hintText: 'adres e-mail',
                 labelText: 'adres e-mail',
               ),
+              validator: nonEmptyValidator,
             ),
             const SizedBox(height: 50,),
             ElevatedButton(
               onPressed: (){
-
-                List userData = [(idController.text), sdm, (firstNameController.text), (lastNameController.text), (albumNumberController.text), (telephoneNumberController.text), (emailAdressController.text)];
-                for(int i=0; i < userData.length; i ++){
-                  if(userData[i].isEmpty){
-                    break;
-                  } else {
-                    print(userData[i]);
-                  }
+                dynamic newDepo = {
+                  "_id": idController.text,
+                  "sdm": sdm,
+                  "first_name": firstNameController.text,
+                  "last_name": lastNameController.text,
+                  "album": albumNumberController.text,
+                  "phone": phoneController.text,
+                  "mail": mailController.text,
+                };
+                if (_formKey.currentState!.validate()) {
+                  print(newDepo);
                 }
               },
 
@@ -131,7 +150,7 @@ class _DepoFormState extends State<DepoForm> {
               ),
               child:
               const Text(
-                'Wyślij',
+                'Dodaj depozyt',
               ),
             ),
           ],
