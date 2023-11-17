@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 
 class DepoForm extends StatefulWidget {
-  const DepoForm({Key? key, this.depo}) : super(key: key);
-
-  final dynamic depo;
-
   @override
   State<DepoForm> createState() => _DepoFormState();
 }
@@ -15,12 +11,19 @@ class _DepoFormState extends State<DepoForm> {
   final idController = TextEditingController();
   final firstNameController = TextEditingController();
   final lastNameController = TextEditingController();
+  final albumNumberController = TextEditingController();
+  final telephoneNumberController = TextEditingController();
+  final emailAdressController = TextEditingController();
 
   String sdm = 'KORAB';
 
   @override
   void dispose(){
     idController.dispose();
+    firstNameController.dispose();
+    albumNumberController.dispose();
+    telephoneNumberController.dispose();
+    emailAdressController.dispose();
     super.dispose();
   }
 
@@ -84,24 +87,51 @@ class _DepoFormState extends State<DepoForm> {
               ),
             ),
             TextFormField(
-              controller: lastNameController,
+              controller: albumNumberController,
               decoration: const InputDecoration(
                 hintText: 'numer albumu',
                 labelText: 'numer albumu',
               ),
             ),
             TextFormField(
-              controller: lastNameController,
+              controller: telephoneNumberController,
               decoration: const InputDecoration(
                 hintText: 'numer telefonu',
                 labelText: 'numer telefonu',
               ),
             ),
             TextFormField(
-              controller: lastNameController,
+              controller: emailAdressController,
               decoration: const InputDecoration(
                 hintText: 'adres e-mail',
                 labelText: 'adres e-mail',
+              ),
+            ),
+            const SizedBox(height: 50,),
+            ElevatedButton(
+              onPressed: (){
+
+                List userData = [(idController.text), sdm, (firstNameController.text), (lastNameController.text), (albumNumberController.text), (telephoneNumberController.text), (emailAdressController.text)];
+                for(int i=0; i < userData.length; i ++){
+                  if(userData[i].isEmpty){
+                    break;
+                  } else {
+                    print(userData[i]);
+                  }
+                }
+              },
+
+              style: ElevatedButton.styleFrom(
+              padding: const EdgeInsets.fromLTRB(10, 10.0, 10.0, 10.0),
+              minimumSize:  const Size.fromHeight(50),
+              textStyle: const TextStyle(
+                fontSize: 16.0,
+                fontWeight: FontWeight.bold,
+              ),
+              ),
+              child:
+              const Text(
+                'Wyślij',
               ),
             ),
           ],
