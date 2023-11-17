@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class DarkTheme{
 
   static const textColor = Color(0xFFffffff);
