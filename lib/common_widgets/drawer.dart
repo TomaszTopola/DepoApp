@@ -18,7 +18,6 @@ class _DepoDrawerState extends State<DepoDrawer> {
     setState(() {
       loggedInTitle = isLoggedIn? 'wyloguj':'zaloguj się';
     });
-    print(loggedInTitle);
   }
 
   @override
