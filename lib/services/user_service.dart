@@ -15,9 +15,14 @@ class UserService{
       var url = Uri.http('${ServerProperties.domain}:${ServerProperties.port}', '/api/users/login');
       var response = await http.post(
           url,
-          body:{
+          body: json.encode({
             '_id': login,
             'password': pass,
+          }),
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            'Content-Type': 'application/json',
+            'Accept': '*/*'
           }
       );
 
@@ -34,6 +39,7 @@ class UserService{
 
       return true;
     } catch (err){
+      print(err);
       return false;
     }
   }
