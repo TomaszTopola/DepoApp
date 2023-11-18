@@ -1,5 +1,5 @@
 import 'package:depo_app/common_widgets/depo/depo_dialog.dart';
-import 'package:depo_app/services/depo_service.dart';
+import 'package:depo_app/services/server/depo_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 

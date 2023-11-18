@@ -1,4 +1,4 @@
-import 'package:depo_app/services/user_service.dart';
+import 'package:depo_app/services/server/user_service.dart';
 import 'package:flutter/material.dart';
 
 class DepoDrawer extends StatefulWidget {

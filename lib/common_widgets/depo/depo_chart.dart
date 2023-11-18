@@ -1,6 +1,6 @@
 import 'package:depo_app/common/extensions.dart';
-import 'package:depo_app/services/depo_service.dart';
-import 'package:depo_app/services/user_service.dart';
+import 'package:depo_app/services/server/depo_service.dart';
+import 'package:depo_app/services/server/user_service.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
