@@ -11,26 +11,41 @@ class LoginPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Mój Depozyt'),
+        title: const Text('DepoApp'),
       ),
       endDrawer: const DepoDrawer(),
       body: Padding(
         padding: const EdgeInsets.all(10),
-        child: ListView(
+        child: Row(
           children: [
-            FractionallySizedBox(
-              widthFactor: 0.4,
-              child: SvgPicture.asset(
-                'assets/login.svg',
+            Expanded(
+              child: ListView(
+                children: [
+                  FractionallySizedBox(
+                    widthFactor: 0.8,
+                    child: SvgPicture.asset(
+                      'assets/login.svg',
+                  ),
+                  ),
+                ],
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
-              child: LoginForm(),
-            )
+            Expanded(
+              child: Center(
+                child: ListView(
+                  shrinkWrap: true,
+                  children: const [
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
+                      child: LoginForm(),
+                    )
+                  ]
+                ),
+              ),
+            ),
           ],
-        )
-      ),
-    );
+            ),
+            )
+          );
   }
 }

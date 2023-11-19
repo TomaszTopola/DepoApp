@@ -105,7 +105,7 @@ class _LoginFormState extends State<LoginForm> {
           ),
           const SizedBox(height: 20,),
           const Text(
-            'W przypadku problemów z logowaniem skontaktuj się z Przewodniczącym Komisji ds. Mieszkaniowych\n'
+            'W przypadku problemów z logowaniem skontaktuj się z Przewodniczącym Komisji ds. Mieszkaniowych.\n'
                 'Aplikacja przeznaczona jest wyłącznie dla opiekunów depozytów.',
           ),
           const SizedBox(height: 20,),
