@@ -1,3 +1,4 @@
+import 'package:depo_app/services/server/depo_service.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -304,7 +305,7 @@ class _DepoFormState extends State<DepoForm> {
                   flex: 1,
                   child: ElevatedButton(
                     onPressed: (){
-                      String content = contentController.text.replaceAll('\n', ',');
+                      String content = contentController.text.replaceAll('\n', '');
                       dynamic newDepo = {
                         "_id": idController.text,
                         "sdm": sdm,
@@ -319,11 +320,10 @@ class _DepoFormState extends State<DepoForm> {
                         "valid_to": DateFormat('yyyy-MM-ddThh:mm:ss.sssZ').format(DateFormat(displayDateFormat).parse(validToController.text)),
                       };
                       if (_formKey.currentState!.validate()) {
-                        print(newDepo);
                         if(widget.depo != null){
-                          //TODO: PATCH depo
+                          DepoService.patchDepo(newDepo);
                         }else {
-                          //TODO: POST depo
+                          DepoService.postDepo(newDepo);
                         }
                       }
                       Navigator.pop(context);

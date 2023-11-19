@@ -70,23 +70,26 @@ class _DepoListState extends State<DepoList> {
         padding: const EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
         itemCount: depos.length,
         itemBuilder: (context, index){
-          return Material(
-            elevation: 5.0,
-            borderRadius: BorderRadius.circular(5.0),
-            child: ListTile(
-              leading: SizedBox(
-                height: double.infinity,
-                child: DepoService.getDepoStatusIcon(depos[index]),
-              ),
-              title: Text(depos[index]['_id']),
-              subtitle: Text(DepoService.getStatusString(depos[index]['depo_status']).toUpperCase()),
-              onTap: () => showDialog(
-                context: context,
-                builder: (BuildContext context) => DepoDialog(depo: depos[index])
-              ),
-              trailing: const SizedBox(
-                height: double.infinity,
-                child: Icon(Icons.info_outline),
+          return Padding(
+            padding: const EdgeInsets.fromLTRB(0,5,0,5),
+            child: Material(
+              elevation: 5.0,
+              borderRadius: BorderRadius.circular(5.0),
+              child: ListTile(
+                leading: SizedBox(
+                  height: double.infinity,
+                  child: DepoService.getDepoStatusIcon(depos[index]),
+                ),
+                title: Text('#${depos[index]['_id']} - ${depos[index]['first_name']} ${depos[index]['last_name']}', style: const TextStyle(fontWeight: FontWeight.bold),),
+                subtitle: Text(DepoService.getStatusString(depos[index]['depo_status']).toUpperCase()),
+                onTap: () => showDialog(
+                  context: context,
+                  builder: (BuildContext context) => DepoDialog(depo: depos[index])
+                ),
+                trailing: const SizedBox(
+                  height: double.infinity,
+                  child: Icon(Icons.info_outline),
+                ),
               ),
             ),
           );

@@ -56,6 +56,51 @@ class DepoService{
     return result;
   }
 
+  static Future<dynamic> postDepo(dynamic depo) async{
+    try{
+      String? token = await _storage.read(key: tokenKey);
+      var url = Uri.http(
+          '${ServerProperties.domain}:${ServerProperties.port}',
+          '/api/depo/',
+      );
+      var response = await http.post(
+        url,
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(depo),
+      );
+      if(response.statusCode == 201) return "Zaktualizowano depozyt!";
+      if(response.statusCode == 401) return "Nie masz uprawnień do edytowania depozytów w SDM ${depo["sdm"]}";
+    }catch(err){
+      return -1;
+    }
+  }
+
+  static Future<dynamic> patchDepo(dynamic depo) async{
+    try{
+      String? token = await _storage.read(key: tokenKey);
+      var url = Uri.http(
+        '${ServerProperties.domain}:${ServerProperties.port}',
+        '/api/depo/${depo["_id"]}',
+      );
+      var response = await http.patch(
+        url,
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(depo),
+      );
+      if(response.statusCode == 201) return "Zaktualizowano depozyt!";
+      if(response.statusCode == 401) return "Nie masz uprawnień do edytowania depozytów w SDM ${depo["sdm"]}";
+      if(response.statusCode == 404) return "Nie udało się odnaleźć depozytu o ID ${depo["_id"]}.";
+    }catch(err){
+      return -1;
+    }
+  }
+
   static String getStatusString(String status){
     if(status=="ACTIVE") return 'depozyt aktywny';
     if(status=="CONTACTED") return 'podjęto kontakt';
