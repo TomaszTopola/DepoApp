@@ -393,11 +393,14 @@ class _DepoFormState extends State<DepoForm> {
                 Flexible(
                   flex: 1,
                   child: ElevatedButton(
-                    onPressed: (){
+                    onPressed: () async {
                       
                       dynamic message;
                       
                       if (_formKey.currentState!.validate()) {
+                        String content = '';
+                        depoContent.forEach((element) {content += '$element, ';});
+                        print(content);
                         dynamic newDepo = {
                           "_id": idController.text,
                           "sdm": sdm,
@@ -407,25 +410,29 @@ class _DepoFormState extends State<DepoForm> {
                           "album": albumNumberController.text,
                           "phone": phoneController.text,
                           "mail": mailController.text,
-                          // "content": content,
+                          "content": content,
                           "depo_date": DateFormat('yyyy-MM-ddThh:mm:ss.sssZ').format(DateFormat(displayDateFormat).parse(depoDateController.text)),
                           "valid_to": DateFormat('yyyy-MM-ddThh:mm:ss.sssZ').format(DateFormat(displayDateFormat).parse(validToController.text)),
                         };
+
                         if(widget.depo != null){
-                          message = DepoService.patchDepo(newDepo);
+                          message = await DepoService.patchDepo(newDepo);
                         }else {
-                          message = DepoService.postDepo(newDepo);
+                          message = await DepoService.postDepo(newDepo);
                         }
-                        Navigator.pop(context);
                         if (message == -1){
                           message = 'Niespodziewany błąd';
                         }
-                      
-                        final snackBar = SnackBar(
-                          content: Text(message.toString()),
-                        );
-                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                        Navigator.pop(context);
+
+                        if(context.mounted){
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text(message.toString()),
+                          ));
+                        }
+
+                        if(message.toString().startsWith('201') && context.mounted){
+                          Navigator.pop(context);
+                        }
                       }
                       
                     },
