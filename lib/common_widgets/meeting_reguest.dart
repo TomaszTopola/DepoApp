@@ -71,6 +71,7 @@ class _MeetingRequestState extends State<MeetingRequest> {
                 if( value == null || value.isEmpty ){
                   return 'To pole jest wymagane';
                 }
+                return null;
               },
               decoration: const InputDecoration(
                 hintText: 'imię',
@@ -82,6 +83,7 @@ class _MeetingRequestState extends State<MeetingRequest> {
                 if( value == null || value.isEmpty ){
                   return 'To pole jest wymagane';
                 }
+                return null;
               },
               controller: albumController,
               decoration: const InputDecoration(
