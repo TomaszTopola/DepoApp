@@ -39,26 +39,29 @@ class _DepoListState extends State<DepoList> {
 
     setState(() {
       if(depos.isEmpty){
-        displayWidget = ListView(
-          children: [
-            const SizedBox(height: 20,),
-            const Text(
-              'Brak dostępnych depozytów.',
-              style: TextStyle(
-                fontSize: 15
+        displayWidget = Padding(
+          padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+          child: ListView(
+            children: [
+              const SizedBox(height: 20,),
+              const Text(
+                'Brak dostępnych depozytów.',
+                style: TextStyle(
+                  fontSize: 15
+                ),
               ),
-            ),
-            const SizedBox(height: 15,),
-            ElevatedButton(
-                onPressed: (){
-                  setState((){
-                    displayWidget = spinner;
-                    setupListView();
-                  });
-                },
-                child: const Icon(Icons.refresh),
-            ),
-          ],
+              const SizedBox(height: 15,),
+              ElevatedButton(
+                  onPressed: (){
+                    setState((){
+                      displayWidget = spinner;
+                      setupListView();
+                    });
+                  },
+                  child: const Icon(Icons.refresh),
+              ),
+            ],
+          ),
         );
         return;
       }

@@ -98,6 +98,8 @@ class _DepoDialogState extends State<DepoDialog> {
                       style: ElevatedButton.styleFrom(
                         shape: const CircleBorder(),
                         backgroundColor: Theme.of(context).colorScheme.primary,
+                        foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                        minimumSize: const Size(60,60),
                       ),
                       child: const Icon(Icons.edit,),
                     )

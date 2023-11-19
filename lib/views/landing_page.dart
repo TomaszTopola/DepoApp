@@ -26,7 +26,7 @@ class LandingPage extends StatelessWidget {
           ),
           floatingActionButton: FloatingActionButton(
             backgroundColor: Theme.of(context).colorScheme.primary,
-            child: Icon(Icons.add_card),
+            child: const Icon(Icons.add_card),
             onPressed: (){
               Navigator.pushNamed(context, '/depo/edit');
             },

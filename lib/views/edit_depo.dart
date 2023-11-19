@@ -13,10 +13,10 @@ class EditDepo extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Mój Depozyt'),
+          title: const Text('DepoApp'),
         ),
         endDrawer: const DepoDrawer(),
-        body: DepoForm()
+        body: DepoForm(depo: depo),
       )
     );
   }
