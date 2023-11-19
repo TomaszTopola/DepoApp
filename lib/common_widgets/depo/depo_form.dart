@@ -319,13 +319,21 @@ class _DepoFormState extends State<DepoForm> {
                         "depo_date": DateFormat('yyyy-MM-ddThh:mm:ss.sssZ').format(DateFormat(displayDateFormat).parse(depoDateController.text)),
                         "valid_to": DateFormat('yyyy-MM-ddThh:mm:ss.sssZ').format(DateFormat(displayDateFormat).parse(validToController.text)),
                       };
+                      dynamic message;
                       if (_formKey.currentState!.validate()) {
                         if(widget.depo != null){
-                          DepoService.patchDepo(newDepo);
+                          message = DepoService.patchDepo(newDepo);
                         }else {
-                          DepoService.postDepo(newDepo);
+                          message = DepoService.postDepo(newDepo);
                         }
                       }
+                      if (message == -1){
+                        message = 'Niespodziewany błąd';
+                      }
+                      final snackBar = SnackBar(
+                          content: Text(message.toString()),
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
                       Navigator.pop(context);
                     },
 
