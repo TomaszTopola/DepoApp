@@ -394,7 +394,9 @@ class _DepoFormState extends State<DepoForm> {
                   flex: 1,
                   child: ElevatedButton(
                     onPressed: (){
-                      // String content = contentController.text.replaceAll('\n', '');
+                      
+                      dynamic message;
+                      
                       if (_formKey.currentState!.validate()) {
                         dynamic newDepo = {
                           "_id": idController.text,
@@ -410,12 +412,22 @@ class _DepoFormState extends State<DepoForm> {
                           "valid_to": DateFormat('yyyy-MM-ddThh:mm:ss.sssZ').format(DateFormat(displayDateFormat).parse(validToController.text)),
                         };
                         if(widget.depo != null){
-                          DepoService.patchDepo(newDepo);
+                          message = DepoService.patchDepo(newDepo);
                         }else {
-                          DepoService.postDepo(newDepo);
+                          message = DepoService.postDepo(newDepo);
                         }
                         Navigator.pop(context);
+                        if (message == -1){
+                          message = 'Niespodziewany błąd';
+                        }
+                      
+                        final snackBar = SnackBar(
+                          content: Text(message.toString()),
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        Navigator.pop(context);
                       }
+                      
                     },
 
                     style: ElevatedButton.styleFrom(
