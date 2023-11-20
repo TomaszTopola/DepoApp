@@ -71,8 +71,9 @@ class DepoService{
         },
         body: jsonEncode(depo),
       );
-      if(response.statusCode == 201) return "Zaktualizowano depozyt!";
-      if(response.statusCode == 401) return "Nie masz uprawnień do edytowania depozytów w SDM ${depo["sdm"]}";
+      if(response.statusCode == 201) return "201 - Utworzono depozyt!";
+      if(response.statusCode == 401) return "401 - Nie masz uprawnień do edytowania depozytów w SDM ${depo["sdm"]}";
+      if(response.statusCode == 409) return "409 - Konflikt - duplikat ID depozytu";
     }catch(err){
       return -1;
     }
@@ -93,9 +94,9 @@ class DepoService{
         },
         body: jsonEncode(depo),
       );
-      if(response.statusCode == 201) return "Zaktualizowano depozyt!";
-      if(response.statusCode == 401) return "Nie masz uprawnień do edytowania depozytów w SDM ${depo["sdm"]}";
-      if(response.statusCode == 404) return "Nie udało się odnaleźć depozytu o ID ${depo["_id"]}.";
+      if(response.statusCode == 201) return "201 - Zaktualizowano depozyt!";
+      if(response.statusCode == 401) return "401 - Nie masz uprawnień do edytowania depozytów w SDM ${depo["sdm"]}";
+      if(response.statusCode == 404) return "404 - Nie udało się odnaleźć depozytu o ID ${depo["_id"]}.";
     }catch(err){
       return -1;
     }

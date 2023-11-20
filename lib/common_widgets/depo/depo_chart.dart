@@ -20,6 +20,7 @@ class _DepoChartState extends State<DepoChart> {
   late Color primary;
   late Color error;
   late Color secondary;
+  late double deviceWidth;
 
   late Widget spinner = SpinKitWave(
       color: primary,
@@ -46,7 +47,6 @@ class _DepoChartState extends State<DepoChart> {
     double displayActiveDepos = activeDepos + contactedDepos + outdatedDepos + disposedDepos;
 
     setState(() {
-
       if(activeDepos == -1.0){
         displayWidget = IconButton(
           onPressed: (){
@@ -64,129 +64,164 @@ class _DepoChartState extends State<DepoChart> {
         displayActiveDepos = deposLimit;
       }
 
-      displayWidget = Row(
-        children: [
-          Flexible(
-            flex: 2,
-            child: PieChart(
-                PieChartData(
-                    centerSpaceRadius: 0,
-                    startDegreeOffset: 270,
-                    // sectionsSpace: widget.chartHeight/50,
-                    sections: [
-                      PieChartSectionData(
-                          color: error,
-                          value: displayActiveDepos,
-                          showTitle: false,
-                          radius: widget.chartHeight *0.25
-                      ),
-                      PieChartSectionData(
-                        color: primary,
-                        value: deposLimit - displayActiveDepos,
-                        showTitle: false,
-                        radius: widget.chartHeight *0.25,
-                      ),
-                    ]
-                )
-            ),
-          ),
-          Flexible(
-            flex: 2,
-            child: IntrinsicHeight(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.circle,
-                        color: error,
-                      ),
-                      SizedBox(width: widget.chartHeight/10,),
-                      Text('Zajęte miejsca: ${(displayActiveDepos/deposLimit*100).toPrecision(2)}%'),
-                    ],
-                  ),
-                  const SizedBox(height: 10,),
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.circle,
-                        color: primary,
-                      ),
-                      SizedBox(width: widget.chartHeight/10,),
-                      Text('Wolne miejsca: ${((deposLimit-displayActiveDepos)/deposLimit*100).toPrecision(2)}%'),
-                    ],
-                  ),
-                  const SizedBox(height: 10,),
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.circle,
-                        color: secondary,
-                      ),
-                      SizedBox(width: widget.chartHeight/10,),
-                      Text('Aktywne: $activeDepos'),
-                    ],
-                  ),
-                  const SizedBox(height: 10,),
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.circle,
-                        color: secondary,
-                      ),
-                      SizedBox(width: widget.chartHeight/10,),
-                      Text('Po kontakcie: $contactedDepos'),
-                    ],
-                  ),
-                  const SizedBox(height: 10,),
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.circle,
-                        color: secondary,
-                      ),
-                      SizedBox(width: widget.chartHeight/10,),
-                      Text('Przeterminowane: $outdatedDepos'),
-                    ],
-                  ),
-                  const SizedBox(height: 10,),
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.circle,
-                        color: secondary,
-                      ),
-                      SizedBox(width: widget.chartHeight/10,),
-                      Text('Zgoda na utylizację: $disposedDepos'),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Flexible(
-            flex: 3,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const SizedBox(height: 20,),
-                const Text('Opiekunowie depozytu:'),
-                const SizedBox(height: 20,),
-                Expanded(
-                  child: ListView(
-                    // mainAxisAlignment: MainAxisAlignment.center,
-                    // crossAxisAlignment: CrossAxisAlignment.center,
-                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                    children: keeperList,
-                  ),
+      Widget pieChart = PieChart(
+          PieChartData(
+              centerSpaceRadius: 0,
+              startDegreeOffset: 270,
+              // sectionsSpace: widget.chartHeight/50,
+              sections: [
+                PieChartSectionData(
+                    color: error,
+                    value: displayActiveDepos,
+                    showTitle: false,
+                    radius: widget.chartHeight *0.25
                 ),
+                PieChartSectionData(
+                  color: primary,
+                  value: deposLimit - displayActiveDepos,
+                  showTitle: false,
+                  radius: widget.chartHeight *0.25,
+                ),
+              ]
+          )
+      );
+
+      Widget pieChartDescription = IntrinsicHeight(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Row(
+              children: [
+                Icon(
+                  Icons.circle,
+                  color: error,
+                ),
+                SizedBox(width: widget.chartHeight/10,),
+                Text('Zajęte miejsca: ${(displayActiveDepos/deposLimit*100).toPrecision(2)}%'),
               ],
             ),
-          )
+            const SizedBox(height: 10,),
+            Row(
+              children: [
+                Icon(
+                  Icons.circle,
+                  color: primary,
+                ),
+                SizedBox(width: widget.chartHeight/10,),
+                Text('Wolne miejsca: ${((deposLimit-displayActiveDepos)/deposLimit*100).toPrecision(2)}%'),
+              ],
+            ),
+            const SizedBox(height: 10,),
+            Row(
+              children: [
+                Icon(
+                  Icons.circle,
+                  color: secondary,
+                ),
+                SizedBox(width: widget.chartHeight/10,),
+                Text('Aktywne: $activeDepos'),
+              ],
+            ),
+            const SizedBox(height: 10,),
+            Row(
+              children: [
+                Icon(
+                  Icons.circle,
+                  color: secondary,
+                ),
+                SizedBox(width: widget.chartHeight/10,),
+                Text('Po kontakcie: $contactedDepos'),
+              ],
+            ),
+            const SizedBox(height: 10,),
+            Row(
+              children: [
+                Icon(
+                  Icons.circle,
+                  color: secondary,
+                ),
+                SizedBox(width: widget.chartHeight/10,),
+                Text('Przeterminowane: $outdatedDepos'),
+              ],
+            ),
+            const SizedBox(height: 10,),
+            Row(
+              children: [
+                Icon(
+                  Icons.circle,
+                  color: secondary,
+                ),
+                SizedBox(width: widget.chartHeight/10,),
+                Text('Zgoda na utylizację: $disposedDepos'),
+              ],
+            ),
+          ],
+        ),
+      );
+
+      Widget keeperListWidget = Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const SizedBox(height: 20,),
+          const Text('Opiekunowie depozytu:'),
+          const SizedBox(height: 20,),
+          Expanded(
+            child: ListView(
+              // mainAxisAlignment: MainAxisAlignment.center,
+              // crossAxisAlignment: CrossAxisAlignment.center,
+              padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+              children: keeperList,
+            ),
+          ),
         ],
       );
+
+      if(deviceWidth > 1200){
+        displayWidget = Column(
+          children: [
+            Flexible(
+              flex: 2,
+              child: pieChart,
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 0, 20, 40),
+              child: Flexible(
+                flex: 2,
+                child: pieChartDescription,
+              ),
+            ),
+            Flexible(
+                flex: 3,
+                child: keeperListWidget
+            )
+          ],
+        );
+      }else if(deviceWidth>800){
+        displayWidget = Row(
+          children: [
+            Flexible(
+              flex: 2,
+              child: pieChart,
+            ),
+            Flexible(
+              flex: 2,
+              child: pieChartDescription,
+            ),
+            Flexible(
+                flex: 3,
+                child: keeperListWidget
+            )
+          ],
+        );
+      }else{
+        displayWidget = Padding(
+          padding: const EdgeInsets.fromLTRB(20,20,0,20),
+          child: Center(child: pieChartDescription),
+        );
+      }
+
+      print(deviceWidth);
     });
   }
 
@@ -254,12 +289,31 @@ class _DepoChartState extends State<DepoChart> {
     primary = Theme.of(context).colorScheme.primary;
     error = Theme.of(context).colorScheme.error;
     secondary = Theme.of(context).colorScheme.secondary;
+    deviceWidth = MediaQuery.of(context).size.width;
 
-    return SizedBox(
-      height: widget.chartHeight,
-      child: Card(
-        child: displayWidget,
-      ),
-    );
+    // return Text('hello');
+    // if(deviceWidth>)
+    if(deviceWidth>1200){
+      return SizedBox(
+        width: widget.chartHeight*1.5,
+        child: Card(
+          child: displayWidget,
+        ),
+      );
+    }else if(deviceWidth>800){
+      return SizedBox(
+        height: widget.chartHeight,
+        child: Card(
+          child: displayWidget,
+        ),
+      );
+    }else{
+      return SizedBox(
+        child: Card(
+          child: displayWidget,
+        ),
+      );
+    }
+
   }
 }

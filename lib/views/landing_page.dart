@@ -9,9 +9,57 @@ class LandingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double deviceWidth = MediaQuery.of(context).size.width;
+    List<Widget> displayWidget;
+
+    if(deviceWidth>1200){
+      displayWidget = [
+        const Row(
+          children: [
+            DepoChart(chartHeight: 300, sdm: 'KORAB'),
+            Expanded(child: DepoList(sdm: 'KORAB'),),
+          ],
+        ),
+        const Row(
+          children: [
+            DepoChart(chartHeight: 300, sdm: 'PASAT'),
+            Expanded(child: DepoList(sdm: 'PASAT'),),
+          ],
+        ),
+      ];
+    }else if(deviceWidth>800){
+      displayWidget = [
+        const Column(
+          children: [
+            DepoChart(chartHeight: 300, sdm: "KORAB",),
+            Expanded(child: DepoList(sdm: 'KORAB')),
+          ],
+        ),
+        const Column(
+          children: [
+            DepoChart(chartHeight: 300, sdm: "PASAT",),
+            Expanded(child: DepoList(sdm: 'PASAT')),
+          ],
+        ),
+      ];
+    }else {
+      displayWidget = [
+        const Column(
+          children: [
+            DepoChart(chartHeight: 300, sdm: "KORAB",),
+            Expanded(child: DepoList(sdm: 'KORAB')),
+          ],
+        ),
+        const Column(
+          children: [
+            DepoChart(chartHeight: 300, sdm: "PASAT",),
+            Expanded(child: DepoList(sdm: 'PASAT')),
+          ],
+        ),
+      ];
+    }
     return DefaultTabController(
         length: 2,
-
         child: Scaffold(
           endDrawer: const DepoDrawer(),
           appBar: AppBar(
@@ -31,30 +79,8 @@ class LandingPage extends StatelessWidget {
               Navigator.pushNamed(context, '/depo/edit');
             },
           ),
-          body: const TabBarView(
-            children: [
-              //KORAB
-              Column(
-                children: [
-                  DepoChart(
-                    chartHeight: 300,
-                    sdm: "KORAB",
-                  ),
-                  Expanded(child: DepoList(sdm: 'KORAB'))
-                ],
-              ),
-
-              //PASAT
-              Column(
-                children: [
-                  DepoChart(
-                    chartHeight: 300,
-                    sdm: "PASAT",
-                  ),
-                  Expanded(child: DepoList(sdm: 'PASAT')),
-                ],
-              ),
-            ],
+          body: TabBarView(
+            children: displayWidget
           ),
         )
     );
