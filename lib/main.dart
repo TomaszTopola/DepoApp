@@ -15,7 +15,7 @@ void main() {
       routes:{
         '/landing': (context) => const LandingPage(),
         '/depo/edit': (context) => EditDepo(),
-        '/login': (context) => const LoginPage(),
+        '/login': (context) => LoginPage(),
       }
   ));
 }
