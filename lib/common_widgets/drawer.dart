@@ -55,7 +55,7 @@ class _DepoDrawerState extends State<DepoDrawer> {
               color: Theme.of(context).colorScheme.primary
             ),
             child: Text(
-              'Mój Deopzyt',
+              'DepoApp',
               style: TextStyle(
                 color: Theme.of(context).colorScheme.onPrimary,
               ),
