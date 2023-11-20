@@ -177,16 +177,19 @@ class _DepoChartState extends State<DepoChart> {
         ],
       );
 
-      if(deviceWidth>=800){
+      if(deviceWidth > 1200){
         displayWidget = Column(
           children: [
             Flexible(
               flex: 2,
               child: pieChart,
             ),
-            Flexible(
-              flex: 2,
-              child: pieChartDescription,
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 0, 20, 40),
+              child: Flexible(
+                flex: 2,
+                child: pieChartDescription,
+              ),
             ),
             Flexible(
                 flex: 3,
@@ -194,8 +197,7 @@ class _DepoChartState extends State<DepoChart> {
             )
           ],
         );
-      }
-      if(deviceWidth<800){
+      }else if(deviceWidth>800){
         displayWidget = Row(
           children: [
             Flexible(
@@ -212,11 +214,13 @@ class _DepoChartState extends State<DepoChart> {
             )
           ],
         );
-      }if(deviceWidth<600){
-        displayWidget = Text('under600');
-      }if(deviceWidth<300){
-        displayWidget = Text('under300');
+      }else{
+        displayWidget = Padding(
+          padding: const EdgeInsets.fromLTRB(20,20,0,20),
+          child: Center(child: pieChartDescription),
+        );
       }
+
       print(deviceWidth);
     });
   }
@@ -285,14 +289,31 @@ class _DepoChartState extends State<DepoChart> {
     primary = Theme.of(context).colorScheme.primary;
     error = Theme.of(context).colorScheme.error;
     secondary = Theme.of(context).colorScheme.secondary;
+    deviceWidth = MediaQuery.of(context).size.width;
 
-    deviceWidth = MediaQuery.of(context).size.shortestSide;
+    // return Text('hello');
+    // if(deviceWidth>)
+    if(deviceWidth>1200){
+      return SizedBox(
+        width: widget.chartHeight*1.5,
+        child: Card(
+          child: displayWidget,
+        ),
+      );
+    }else if(deviceWidth>800){
+      return SizedBox(
+        height: widget.chartHeight,
+        child: Card(
+          child: displayWidget,
+        ),
+      );
+    }else{
+      return SizedBox(
+        child: Card(
+          child: displayWidget,
+        ),
+      );
+    }
 
-    return SizedBox(
-      height: widget.chartHeight,
-      child: Card(
-        child: displayWidget,
-      ),
-    );
   }
 }
