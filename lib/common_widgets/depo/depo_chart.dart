@@ -220,8 +220,6 @@ class _DepoChartState extends State<DepoChart> {
           child: Center(child: pieChartDescription),
         );
       }
-
-      print(deviceWidth);
     });
   }
 

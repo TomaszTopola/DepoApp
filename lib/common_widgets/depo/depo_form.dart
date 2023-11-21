@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class DepoForm extends StatefulWidget {
-  DepoForm({super.key, this.depo});
+  const DepoForm({super.key, this.depo});
 
   final dynamic depo;
 
@@ -55,7 +55,6 @@ class _DepoFormState extends State<DepoForm> {
   void initState(){
     super.initState();
     if(widget.depo != null){
-      print(widget.depo);
       idController.text = widget.depo["_id"];
       depoStatus = widget.depo["depo_status"];
       albumNumberController.text = widget.depo["album"];
@@ -332,7 +331,7 @@ class _DepoFormState extends State<DepoForm> {
                                 if(contentController.text=='')return;
                                 setState(() {
                                   List<String> contentToAdd = contentController.text.split(', ');
-                                  contentToAdd.forEach((element) {depoContent.add(element);});
+                                  for (var element in contentToAdd) {depoContent.add(element);}
                                   contentController.text = '';
                                 });
                               },
@@ -399,8 +398,7 @@ class _DepoFormState extends State<DepoForm> {
                       
                       if (_formKey.currentState!.validate()) {
                         String content = '';
-                        depoContent.forEach((element) {content += '$element, ';});
-                        print(content);
+                        for (var element in depoContent) {content += '$element, ';}
                         dynamic newDepo = {
                           "_id": idController.text,
                           "sdm": sdm,
